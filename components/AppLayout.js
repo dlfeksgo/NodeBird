@@ -10,7 +10,7 @@ const AppLayout = ({ children }) => {
 				<Menu mode="horizontal">
 					<Menu.Item key="home">
 						<Link href="/">
-							<a>노드버드</a>
+							<a>Home</a>
 						</Link>
 					</Menu.Item>
 					<Menu.Item key="profile">
@@ -19,11 +19,13 @@ const AppLayout = ({ children }) => {
 						</Link>
 					</Menu.Item>
 					<Menu.Item key="mail">
-						<Input.Search enterButton style={{ verticalAlign: 'middle' }}/>
+						<Input.Search enterButton style={{ verticalAlign: 'middle' }} />
 					</Menu.Item>
 				</Menu>
 				<Link href="/signup">
-				<a><Button>회원가입</Button></a>
+					<a>
+						<Button>회원가입</Button>
+					</a>
 				</Link>
 				{children}
 			</div>
