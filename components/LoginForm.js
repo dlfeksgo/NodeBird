@@ -2,26 +2,25 @@ import React, { useCallback, useState } from 'react';
 import { Form, Input, Button } from 'antd';
 import Link from 'next/link';
 
-const LoginForm = () => {
+const LoginForm = ({ setIsLoggedIn }) => {
 	const [id, setId] = useState('');
 	const [password, setPassword] = useState('');
 
-	const onChangeId = useCallback(
-		(e) => {
-			setId(e.target.value);
-		},
-		[id, password]
-	);
+	const onChangeId = useCallback((e) => {
+		setId(e.target.value);
+	}, []);
 
-	const onChangePw = useCallback(
-		(e) => {
-			setPassword(e.target.value);
-		},
-		[id, password]
-	);
+	const onChangePw = useCallback((e) => {
+		setPassword(e.target.value);
+	}, []);
+
+	const onSubmitForm = useCallback(() => {
+		console.log(id, password);
+		setIsLoggedIn(true);
+	}, [id, password]);
 
 	return (
-		<Form>
+		<Form onFinish={onSubmitForm}>
 			<div>
 				<lable htmlFor="user-id">아이디</lable>
 				<Input
