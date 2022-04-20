@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-// import { PropTypes } from 'prop-types';
 import { Menu, Input, Button, Row, Col } from 'antd';
 import LoginForm from '../components/LoginForm';
 import UserProfile from '../components/UserProfile';
@@ -41,7 +40,7 @@ const AppLayout = ({ children }) => {
 				<Row gutter={8}>
 					<Col xs={24} md={6}>
 						{isLoggedIn ? (
-							<UserProfile />
+							<UserProfile setIsLoggedIn={setIsLoggedIn} />
 						) : (
 							<LoginForm setIsLoggedIn={setIsLoggedIn} />
 						)}

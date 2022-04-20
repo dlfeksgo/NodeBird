@@ -3,8 +3,8 @@ import { Form, Input, Button } from 'antd';
 import Link from 'next/link';
 
 const LoginForm = ({ setIsLoggedIn }) => {
-	const [id, setId] = useState('');
-	const [password, setPassword] = useState('');
+	const [id, setId] = useState('abc');
+	const [password, setPassword] = useState('111');
 
 	const onChangeId = useCallback((e) => {
 		setId(e.target.value);
@@ -22,7 +22,7 @@ const LoginForm = ({ setIsLoggedIn }) => {
 	return (
 		<Form onFinish={onSubmitForm}>
 			<div>
-				<lable htmlFor="user-id">아이디</lable>
+				<label htmlFor="user-id">아이디</label>
 				<Input
 					type="text"
 					name="user-id"
@@ -32,7 +32,7 @@ const LoginForm = ({ setIsLoggedIn }) => {
 				></Input>
 			</div>
 			<div>
-				<lable htmlFor="user-pw">비밀번호</lable>
+				<label htmlFor="user-pw">비밀번호</label>
 				<Input
 					type="password"
 					name="user-pw"
