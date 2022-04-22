@@ -23,20 +23,14 @@ const reducer = (state = initialState, action) => {
 		case 'LOG_IN':
 			return {
 				...state,
-				user: {
-					...state.user,
-					isLoggedIn: true,
-					user: action.data,
-				},
+				isLoggedIn: true,
+				user: action.data,
 			};
 		case 'LOG_OUT':
 			return {
 				...state,
-				user: {
-					...state.user,
-					isLoggedIn: false,
-					user: null,
-				},
+				isLoggedIn: false,
+				user: null,
 			};
 		default:
 			return state;
