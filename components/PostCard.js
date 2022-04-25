@@ -12,6 +12,8 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
+import CommentForm from './CommentForm';
+
 const CardWrapper = styled.div`
 	margin-bottom: 20px;
 `;
@@ -69,13 +71,12 @@ const PostCard = ({ post }) => {
 				<Card.Meta
 					avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
 					title="Card title"
-					description="얍!"
+					description="첫 번째 게시글 #해시태그 #익스프레스"
 				/>
 			</Card>
 			{commentFormOpened && (
 				<>
-					{/* <CommentForm /> */}
-					{/* 댓글리스트 */}
+					<CommentForm post={post} />
 					<List
 						itemLayout="horizontal"
 						dataSource={post.Comments}
