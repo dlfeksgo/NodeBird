@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, Card, Popover, Avatar } from 'antd';
 import {
 	RetweetOutlined,
 	HeartOutlined,
 	MessageOutlined,
 	EllipsisOutlined,
+	HeartTwoTone,
 } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
@@ -13,13 +14,24 @@ const PostCard = ({ post }) => {
 	const { me } = useSelector((state) => state.user);
 	const id = me?.id;
 
+	const [liked, setLiked] = useState(false);
+	const likedToggle = useCallback(() => {
+		console.log(liked);
+
+		setLiked((prev) => !prev);
+	}, []);
+
 	return (
 		<Card
 			// style={{ width: 300 }}
 			// cover={post.Images[0] && <PostImages images={post.Images} />}
 			actions={[
 				<RetweetOutlined key="retweet" />,
-				<HeartOutlined key="heart" />,
+				liked ? (
+					<HeartTwoTone twoToneColor="#eb2f96" onClick={likedToggle} />
+				) : (
+					<HeartOutlined key="heart" onClick={likedToggle} />
+				),
 				<MessageOutlined key="comment" />,
 				<Popover
 					key="more"
