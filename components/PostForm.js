@@ -9,6 +9,7 @@ const PostForm = () => {
 	const imageInput = useRef();
 	const postInput = useRef();
 	const [text, setText] = useState('');
+
 	const onChangeText = useCallback((e) => {
 		setText(e.target.value);
 	}, []);
@@ -21,7 +22,7 @@ const PostForm = () => {
 	}, []);
 
 	const onInputClick = useCallback(() => {
-		imageInput.current.click();
+		imageInput.current.input.click();
 	}, [imageInput.current]);
 
 	return (
