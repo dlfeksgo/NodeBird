@@ -34,7 +34,7 @@ const PostForm = () => {
 				maxLength={140}
 				placeholder="여기다가 적어봐요~"
 			></Input.TextArea>
-			<div>
+			<div style={{ marginBottom: '20px' }}>
 				<Input type="file" multiple hidden ref={imageInput}></Input>
 				<Button onClick={onInputClick}>이미지 업로드</Button>
 				{/* <Button type="primary" >짹짹</Button> */}

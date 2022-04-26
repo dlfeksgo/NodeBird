@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import CommentForm from './CommentForm';
+import PostImages from './PostImages';
 
 const CardWrapper = styled.div`
 	margin-bottom: 20px;
@@ -36,7 +37,13 @@ const PostCard = ({ post }) => {
 		<CardWrapper>
 			<Card
 				// style={{ width: 300 }}
-				// cover={post.Images[0] && <PostImages images={post.Images} />}
+				cover={post.Images[0] && <PostImages images={post.Images} />}
+				// cover={
+				// 	<img
+				// 		alt="example"
+				// 		src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+				// 	/>
+				// }
 				actions={[
 					<RetweetOutlined key="retweet" />,
 					liked ? (
