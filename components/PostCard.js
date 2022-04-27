@@ -14,6 +14,7 @@ import styled from 'styled-components';
 
 import CommentForm from './CommentForm';
 import PostImages from './PostImages';
+import PostCardContent from './PostCardContent';
 
 const CardWrapper = styled.div`
 	margin-bottom: 20px;
@@ -78,7 +79,7 @@ const PostCard = ({ post }) => {
 				<Card.Meta
 					avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
 					title="Card title"
-					description="첫 번째 게시글 #해시태그 #익스프레스"
+					description={<PostCardContent postData={post.content} />}
 				/>
 			</Card>
 			{commentFormOpened && (
