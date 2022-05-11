@@ -1,25 +1,28 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Form, Input, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { addPost } from '../reducers/post';
+import useInput from '../hooks/useInput';
 
 const PostForm = () => {
-	const { imagePath } = useSelector((state) => state.post);
+	const { imagePath, addPostDone } = useSelector((state) => state.post);
 	const dispatch = useDispatch();
 	const imageInput = useRef();
 	const postInput = useRef();
-	const [text, setText] = useState('');
+	const [text, onChangeText, setText] = useInput('');
 
-	const onChangeText = useCallback((e) => {
-		setText(e.target.value);
-	}, []);
+	useEffect(() => {
+		if (addPostDone) {
+			setText('');
+		}
+	}, [addPostDone]);
 
 	const onSubmit = useCallback(() => {
-		dispatch(addPost);
-		setText('');
+		dispatch(addPost(text));
+		// setText('');
 		postInput.current.focus();
 		// inputRef.current.focus(); 왜 안되지
-	}, []);
+	}, [text]);
 
 	const onInputClick = useCallback(() => {
 		imageInput.current.input.click();

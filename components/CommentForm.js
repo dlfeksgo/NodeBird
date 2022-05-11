@@ -1,9 +1,11 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useEffect } from 'react';
 import { Form, Input, Button } from 'antd';
 import { createGlobalStyle } from 'styled-components';
 import useInput from '../hooks/useInput';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+
+import { ADD_COMMENT_REQUEST } from '../reducers/post';
 
 const Global = createGlobalStyle`
     .ant-form {
@@ -12,6 +14,8 @@ const Global = createGlobalStyle`
 `;
 
 const CommentForm = ({ post }) => {
+	const dispatch = useDispatch();
+	const { addCommentDone } = useSelector((state) => state.post);
 	const id = useSelector((state) => state.user.me?.id);
 	const inputRef = useRef();
 
@@ -24,11 +28,20 @@ const CommentForm = ({ post }) => {
 	// 	[commentText]
 	// );
 
+	useEffect(() => {
+		if (addCommentDone) {
+			setComment('');
+		}
+	}, [addCommentDone]);
+
 	const onSubmitComment = useCallback(() => {
 		console.log(post.id, comment);
-		setComment('');
+		dispatch({
+			type: ADD_COMMENT_REQUEST,
+			data: { content: comment, postId: post.id, userId: id },
+		});
 		inputRef.current.focus();
-	}, [comment]);
+	}, [comment, id]);
 
 	return (
 		<>

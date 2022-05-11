@@ -1,3 +1,6 @@
+import shortid from 'shortid';
+import produce from 'immer';
+
 const initialState = {
 	mainPosts: [
 		{
@@ -35,36 +38,124 @@ const initialState = {
 		},
 	],
 	imagePaths: [],
-	postAdded: false,
+	addPostLoading: false,
+	addPostDone: false,
+	addPostError: null,
+	removePostLoading: false,
+	removePostDone: false,
+	removePostError: null,
+	addCommentLoading: false,
+	addCommentDone: false,
+	addCommentError: null,
 };
 
-const ADD_POST = 'ADD_POST';
-export const addPost = {
-	type: ADD_POST,
+export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
+export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
+export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
+
+export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
+export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
+export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
+
+export const ADD_COMMENT_REQUEST = 'ADD_COMMNET_REQUEST';
+export const ADD_COMMENT_SUCCESS = 'ADD_COMMNET_SUCCESS';
+export const ADD_COMMENT_FAILURE = 'ADD_COMMNET_FAILURE';
+
+export const addPost = (data) => {
+	return {
+		type: ADD_POST_REQUEST,
+		data,
+	};
 };
 
-const dummyPost = {
-	id: 2,
-	content: '더미데이터입니다.',
+const dummyPost = (data) => ({
+	id: data.id,
+	content: data.content,
 	User: {
 		id: 1,
 		nickname: '제로초',
 	},
 	Images: [],
 	Comments: [],
-};
+});
+
+const dummyComment = (data) => ({
+	id: shortid.generate(),
+	User: {
+		nickname: 'nero',
+	},
+	content: data,
+});
 
 const reducer = (state = initialState, action) => {
-	switch (action.type) {
-		case ADD_POST:
-			return {
-				...state,
-				mainPosts: [...state.mainPosts, dummyPost],
-				postAdded: true,
-			};
-		default:
-			return state;
-	}
+	return produce(state, (draft) => {
+		switch (action.type) {
+			case ADD_POST_REQUEST:
+				draft.addPostLoading = true;
+				draft.addPostDone = false;
+				draft.addPostError = null;
+				break;
+			case ADD_POST_SUCCESS:
+				// draft.mainPosts = [dummyPost(action.data), ...state.mainPosts];
+				draft.mainPosts.unshift(dummyPost(action.data));
+				draft.addPostLoadin = false;
+				draft.addPostDone = true;
+				break;
+			case ADD_POST_FAILURE:
+				draft.addPostLoading = false;
+				draft.addPostError = action.error;
+				break;
+			case REMOVE_POST_REQUEST:
+				draft.removePostLoading = true;
+				draft.removePostDone = false;
+				draft.removePostError = null;
+				break;
+			case REMOVE_POST_SUCCESS:
+				draft.mainPosts = state.mainPosts.filter((v) => v.id !== action.data); //splice 써도 됨.
+				draft.removePostLoading = false;
+				draft.removePostDone = true;
+				break;
+			case REMOVE_POST_FAILURE:
+				draft.removePostLoading = false;
+				draft.removePostError = action.error;
+				break;
+			case ADD_COMMENT_REQUEST:
+				draft.addCommentLoading = true;
+				draft.addCommentDone = false;
+				draft.addCommentError = null;
+				break;
+			case ADD_COMMENT_SUCCESS:
+				console.log(action.data);
+				const post = draft.mainPosts.find((v) => v.id === action.data.postId);
+				post.Comments.unshift(dummyComment(action.data.content));
+				draft.addCommentLoading = false;
+				draft.addCommentDone = true;
+				break;
+
+			// //CommentForm > saga post.js에서 data: {content, postId, userId}
+			// //댓글을 달려면 해당하는 게시물의 id를 알아야 접근할 수 있다.
+			// const postIndex = state.mainPosts.findIndex(
+			// 	(v) => v.id === action.data.postId
+			// ); //현재 게시물 index 값
+			// const post = state.mainPosts[postIndex]; //현재의 게시물 찾음 - 객체임
+			// //게시물 안의 코멘트들 얕은 복사 후, 더미코멘트 추가
+			// const Comments = [dummyComment(action.data.content), ...post.Comments];
+			// const mainPosts = [...state.mainPosts]; //코멘트 얕은 복사됐으니까
+			// mainPosts[postIndex] = { ...post, Comments }; //얕은 복사된 mainPosts 게시물에 게시물 복사 후 댓글 업데이트
+			// return {
+			// 	...state,
+			// 	addCommentLoading: false,
+			// 	addCommentDone: true,
+			// };
+			case ADD_COMMENT_FAILURE:
+				draft.addCommentLoading = false;
+				draft.addCommentError = action.error;
+				break;
+			default:
+				// return state;
+				break;
+		}
+	});
 };
 
 export default reducer;

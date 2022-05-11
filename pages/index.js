@@ -5,14 +5,14 @@ import PostCard from '../components/PostCard';
 import { useSelector } from 'react-redux';
 
 const Home = () => {
-	const { isLoggedIn } = useSelector((state) => state.user);
+	const { me } = useSelector((state) => state.user);
 	const { mainPosts } = useSelector((state) => state.post);
 
 	return (
 		<>
 			<AppLayout>
-				{isLoggedIn && <PostForm />}
-				{!isLoggedIn && <div>로그인하면 보여줄게~</div>}
+				{me && <PostForm />}
+				{!me && <div>로그인하면 보여줄게~</div>}
 				{mainPosts.map((v) => {
 					return <PostCard key={v.id} post={v} />;
 				})}

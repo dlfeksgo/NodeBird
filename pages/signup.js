@@ -6,13 +6,18 @@ import styled from 'styled-components';
 
 import AppLayout from '../components/AppLayout';
 import useInput from '../hooks/useInput';
+import { useDispatch, useSelector } from 'react-redux';
+import { SIGN_UP_REQUEST } from '../reducers/user';
 
 const ErrorMessage = styled.div`
 	color: red;
 `;
 
 const Signup = () => {
-	const [id, onChangeId] = useInput('');
+	const dispatch = useDispatch;
+	const { signUpLoading } = useSelector((stat) => state.user);
+
+	const [email, onChangeEmail] = useInput('');
 	const [nickname, onChangeNickname] = useInput('');
 	const [password, onChangePassword] = useInput('');
 
@@ -44,7 +49,11 @@ const Signup = () => {
 			if (password !== passwordCheck) {
 				return setPasswordError(true);
 			}
-			console.log(id, password, nickname);
+			console.log(email, password, nickname);
+			dispatch({
+				type: SIGN_UP_REQUEST,
+				data: { email, password, nickname },
+			});
 		},
 		[password, term, passwordCheck]
 	);
@@ -57,8 +66,14 @@ const Signup = () => {
 			<AppLayout>
 				<Form onFinish={onSubmit}>
 					<div>
-						<label htmlFor="user-id">아이디</label>
-						<Input name="user-id" value={id} required onChange={onChangeId} />
+						<label htmlFor="user-id">이메일</label>
+						<Input
+							name="user-email"
+							type="email"
+							value={email}
+							required
+							onChange={onChangeEmail}
+						/>
 					</div>
 					<div>
 						<label htmlFor="nickname">닉네임</label>
@@ -99,7 +114,9 @@ const Signup = () => {
 						{termError && <ErrorMessage>동의해라~~~</ErrorMessage>}
 					</div>
 					<div>
-						<Button htmlType="submit">가입하기</Button>
+						<Button htmlType="submit" loading={signUpLoading}>
+							가입하기
+						</Button>
 					</div>
 				</Form>
 			</AppLayout>
