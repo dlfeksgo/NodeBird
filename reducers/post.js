@@ -1,5 +1,6 @@
 import shortid from 'shortid';
 import produce from 'immer';
+import faker from '@faker-js/faker';
 
 const initialState = {
 	mainPosts: [
@@ -12,24 +13,31 @@ const initialState = {
 			content: '첫 번째 게시글 #해시태그 #익스프레스',
 			Images: [
 				{
+					id: shortid.generate(),
 					src: 'https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726',
 				},
 				{
+					id: shortid.generate(),
 					src: 'https://gimg.gilbut.co.kr/book/BN001958/rn_view_BN001958.jpg',
 				},
 				{
+					id: shortid.generate(),
 					src: 'https://gimg.gilbut.co.kr/book/BN001998/rn_view_BN001998.jpg',
 				},
 			],
 			Comments: [
 				{
+					id: shortid.generate(),
 					User: {
+						id: shortid.generate(),
 						nickname: 'nero',
 					},
 					content: '우와 개정판이 나왔군요~',
 				},
 				{
+					id: shortid.generate(),
 					User: {
+						id: shortid.generate(),
 						nickname: 'hero',
 					},
 					content: '얼른 사고싶어요~',
@@ -82,10 +90,35 @@ const dummyPost = (data) => ({
 const dummyComment = (data) => ({
 	id: shortid.generate(),
 	User: {
+		id: 1,
 		nickname: 'nero',
 	},
 	content: data,
 });
+
+initialState.mainPosts = initialState.mainPosts.concat(
+	Array(20)
+		.fill()
+		.map((v) => ({
+			id: shortid.generate(),
+			User: {
+				id: shortid.generate(),
+				nickname: faker.name.firstName(),
+			},
+			content: faker.lorem.paragraph(),
+			Images: [{ src: 'https://via.placeholder.com/150' }],
+			Comments: [
+				{
+					id: shortid.generate(),
+					User: {
+						id: shortid.generate(),
+						nickname: faker.name.firstName(),
+					},
+					content: faker.lorem.sentences(),
+				},
+			],
+		}))
+);
 
 const reducer = (state = initialState, action) => {
 	return produce(state, (draft) => {
