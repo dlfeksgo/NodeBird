@@ -9,6 +9,12 @@ import {
 	SIGN_UP_REQUEST,
 	SIGN_UP_SUCCESS,
 	SIGN_UP_FAILURE,
+	FOLLOW_REQUEST,
+	FOLLOW_SUCCESS,
+	FOLLOW_FAILURE,
+	UNFOLLOW_REQUEST,
+	UNFOLLOW_SUCCESS,
+	UNFOLLOW_FAILURE,
 } from '../reducers/user';
 
 export default function* userSaga() {
@@ -60,6 +66,38 @@ export default function* userSaga() {
 		}
 	}
 
+	function* follow(action) {
+		// const result = yield call(logOutAPI)
+		yield delay(1000);
+		try {
+			yield put({
+				type: FOLLOW_SUCCESS,
+				data: action.data, //post.User.id
+			});
+		} catch (err) {
+			yield put({
+				type: FOLLOW_FAILURE,
+				error: err.response.data,
+			});
+		}
+	}
+
+	function* unfollow(action) {
+		// const result = yield call(logOutAPI)
+		yield delay(1000);
+		try {
+			yield put({
+				type: UNFOLLOW_SUCCESS,
+				data: action.data, //post.User.id
+			});
+		} catch (err) {
+			yield put({
+				type: UNFOLLOW_FAILURE,
+				error: err.response.data,
+			});
+		}
+	}
+
 	function* watchSignUp() {
 		yield takeLatest(SIGN_UP_REQUEST, signUp);
 	}
@@ -72,5 +110,19 @@ export default function* userSaga() {
 		yield takeLatest(LOG_OUT_REQUEST, logOut);
 	}
 
-	yield all([fork(watchLogin), fork(watchLogOut), fork(watchSignUp)]);
+	function* watchFollow() {
+		yield takeLatest(FOLLOW_REQUEST, follow);
+	}
+
+	function* watchUnfollow() {
+		yield takeLatest(UNFOLLOW_REQUEST, unfollow);
+	}
+
+	yield all([
+		fork(watchLogin),
+		fork(watchLogOut),
+		fork(watchSignUp),
+		fork(watchFollow),
+		fork(watchUnfollow),
+	]);
 }

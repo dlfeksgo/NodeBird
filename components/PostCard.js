@@ -15,7 +15,9 @@ import styled from 'styled-components';
 import CommentForm from './CommentForm';
 import PostImages from './PostImages';
 import PostCardContent from './PostCardContent';
+import FollowButton from './FollowButton';
 import { REMOVE_POST_REQUEST } from '../reducers/post';
+import { FOLLOW_REQUEST } from '../reducers/user';
 
 const CardWrapper = styled.div`
 	margin-bottom: 20px;
@@ -24,7 +26,7 @@ const CardWrapper = styled.div`
 const PostCard = ({ post }) => {
 	const dispatch = useDispatch();
 	const { me } = useSelector((state) => state.user);
-	const { removePostLoading } = useSelector((state) => state.post);
+	const { mainPosts, removePostLoading } = useSelector((state) => state.post);
 	const id = me?.id;
 
 	const [liked, setLiked] = useState(false);
@@ -47,6 +49,7 @@ const PostCard = ({ post }) => {
 	return (
 		<CardWrapper>
 			<Card
+				extra={id && <FollowButton post={post} />}
 				// style={{ width: 300 }}
 				cover={post.Images[0] && <PostImages images={post.Images} />}
 				// cover={
