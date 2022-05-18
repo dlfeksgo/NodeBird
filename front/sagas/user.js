@@ -1,4 +1,5 @@
 import { all, fork, call, put, delay, takeLatest } from 'redux-saga/effects';
+import axios from 'axios';
 import {
 	LOG_IN_REQUEST,
 	LOG_IN_SUCCESS,
@@ -18,11 +19,13 @@ import {
 } from '../reducers/user';
 
 export default function* userSaga() {
-	// function logInAPI(){}
+	function signUpAPI(data) {
+		return axios.post('http://localhost:3065/user', data); //백엔드 routes에서 받는다.
+	}
 
-	function* signUp() {
-		// const result = yield call(signUpAPI)
-		yield delay(1000);
+	function* signUp(action) {
+		const result = yield call(signUpAPI, action.data);
+		console.log(result);
 		try {
 			yield put({
 				type: SIGN_UP_SUCCESS,
