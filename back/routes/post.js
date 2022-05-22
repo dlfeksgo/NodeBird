@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-//router.post('/post', (req, res) => {
+//router.post('/post', (req, res) => {dsfd
 router.post('/', (req, res) => {
 	res.json({
 		id: 1,
