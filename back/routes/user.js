@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-	// POST /user/
+	// POST /user/dfsfs
 	await User.create({
 		email: req.body.email,
 		nickname: req.body.nickname,
