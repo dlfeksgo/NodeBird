@@ -1,12 +1,12 @@
 const express = require('express');
-const { User } = require('../models/user');
+const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 
 // POST /user
 router.post('/', async (req, res, next) => {
 	try {
-		const exUser = User.findOne({
+		const exUser = await User.findOne({
 			where: { email: req.body.email },
 		});
 		if (exUser) {
@@ -18,9 +18,9 @@ router.post('/', async (req, res, next) => {
 			nickname: req.body.nickname,
 			password: hashedPassword,
 		});
-		res.send('하이');
-	} catch (err) {
-		console.log(err);
+		res.status(201).send('하이');
+	} catch (error) {
+		console.log(error);
 		next(error);
 	}
 });

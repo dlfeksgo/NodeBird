@@ -24,13 +24,14 @@ export default function* userSaga() {
 	}
 
 	function* signUp(action) {
-		const result = yield call(signUpAPI, action.data);
-		console.log(result);
 		try {
+			const result = yield call(signUpAPI, action.data);
+			console.log(result);
 			yield put({
 				type: SIGN_UP_SUCCESS,
 			});
 		} catch (err) {
+			console.log(err);
 			yield put({
 				type: SIGN_UP_FAILURE,
 				error: err.response.data,

@@ -1,5 +1,6 @@
 const express = require('express');
 const db = require('./models');
+const cors = require('cors');
 const app = express();
 
 const postRouter = require('./routes/post');
@@ -14,6 +15,12 @@ db.sequelize
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(
+	cors({
+		origin: '*',
+	})
+);
 
 //기본구조
 app.get('/', (req, res) => {
