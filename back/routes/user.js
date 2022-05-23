@@ -2,6 +2,26 @@ const express = require('express');
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const router = express.Router();
+const passport = require('passport');
+
+router.post('/login', (req, res, next) => {
+	passport.authenticate('local', (err, user, option) => {
+		if (err) {
+			console.error(err);
+			return next(err);
+		}
+		if (option) {
+			return res.status(401).send(option.reason);
+		}
+		return req.login(user, async (loginErr) => {
+			if (loginErr) {
+				console.error(loginErr);
+				return next(loginErr);
+			}
+			return res.status(200).json(user);
+		});
+	})(req, res, next);
+});
 
 // POST /user
 router.post('/', async (req, res, next) => {

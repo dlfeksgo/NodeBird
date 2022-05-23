@@ -20,7 +20,7 @@ import {
 
 export default function* userSaga() {
 	function signUpAPI(data) {
-		return axios.post('http://localhost:3065/user', data); //백엔드 routes에서 받는다.
+		return axios.post('/user', data); //백엔드 routes에서 받는다.
 	}
 
 	function* signUp(action) {
@@ -39,13 +39,16 @@ export default function* userSaga() {
 		}
 	}
 
+	function logInAPI(data) {
+		return axios.post('/user/login', data); //백엔드 routes에서 받는다.
+	}
+
 	function* logIn(action) {
-		// const result = yield call(logInAPI, action.data)
-		yield delay(1000);
+		const result = yield call(logInAPI, action.data);
 		try {
 			yield put({
 				type: LOG_IN_SUCCESS,
-				data: action.data,
+				data: result.data,
 			});
 		} catch (err) {
 			yield put({
