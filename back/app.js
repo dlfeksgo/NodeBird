@@ -38,6 +38,7 @@ app.use(passport.session());
 app.use(
 	cors({
 		origin: '*',
+		credentials: true, //쿠키도 같이 전달
 	})
 );
 

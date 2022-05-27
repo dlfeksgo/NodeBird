@@ -9,7 +9,7 @@ const passportConfig = () => {
 	passport.deserializeUser(async (id, done) => {
 		try {
 			const user = await User.findOne({ where: id });
-			done(null, user);
+			done(null, user); //req.user.id
 		} catch (error) {
 			console.error(error);
 			done(error);

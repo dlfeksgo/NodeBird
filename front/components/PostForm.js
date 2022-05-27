@@ -18,7 +18,7 @@ const PostForm = () => {
 	}, [addPostDone]);
 
 	const onSubmit = useCallback(() => {
-		dispatch(addPost(text));
+		dispatch(addPost({ content: text }));
 		// setText('');
 		postInput.current.focus();
 		// inputRef.current.focus(); 왜 안되지
