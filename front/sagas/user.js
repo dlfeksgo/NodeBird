@@ -44,8 +44,8 @@ export default function* userSaga() {
 	}
 
 	function* logIn(action) {
-		const result = yield call(logInAPI, action.data);
 		try {
+			const result = yield call(logInAPI, action.data);
 			yield put({
 				type: LOG_IN_SUCCESS,
 				data: result.data,
@@ -58,10 +58,13 @@ export default function* userSaga() {
 		}
 	}
 
+	function logOutAPI(data) {
+		return axios.post('/user/logout', data); //백엔드 routes에서 받는다.
+	}
+
 	function* logOut() {
-		// const result = yield call(logOutAPI)
-		yield delay(1000);
 		try {
+			yield call(logOutAPI);
 			yield put({
 				type: LOG_OUT_SUCCESS,
 			});

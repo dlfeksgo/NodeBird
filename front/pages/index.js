@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Head from 'next/head';
 import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
@@ -60,6 +61,9 @@ const Home = () => {
 
 	return (
 		<>
+			<Head>
+				<title>홈 | NodeBird</title>
+			</Head>
 			<AppLayout>
 				{me && <PostForm />}
 				{!me && <div>로그인하면 보여줄게~</div>}

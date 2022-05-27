@@ -31,11 +31,15 @@ const AppLayout = ({ children }) => {
 					<Menu.Item key="mail">
 						<SearchInput enterButton />
 					</Menu.Item>
-					<Menu.Item key="signup">
-						<Link href="/signup">
-							<a>회원가입</a>
-						</Link>
-					</Menu.Item>
+					{me ? (
+						''
+					) : (
+						<Menu.Item key="signup">
+							<Link href="/signup">
+								<a>회원가입</a>
+							</Link>
+						</Menu.Item>
+					)}
 				</Menu>
 				<Row gutter={8}>
 					<Col xs={24} md={6}>
