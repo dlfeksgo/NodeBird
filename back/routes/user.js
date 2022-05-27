@@ -4,7 +4,9 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 const passport = require('passport');
 
-router.post('/login', (req, res, next) => {
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+
+router.post('/login', isNotLoggedIn, (req, res, next) => {
 	passport.authenticate('local', (err, user, option) => {
 		if (err) {
 			console.error(err);
@@ -43,7 +45,7 @@ router.post('/login', (req, res, next) => {
 });
 
 // POST /user
-router.post('/', async (req, res, next) => {
+router.post('/', isNotLoggedIn, async (req, res, next) => {
 	try {
 		const exUser = await User.findOne({
 			where: { email: req.body.email },
@@ -64,7 +66,7 @@ router.post('/', async (req, res, next) => {
 	}
 });
 
-router.post('/logout', (req, res) => {
+router.post('/logout', isLoggedIn, (req, res) => {
 	req.logout(() => {
 		res.redirect('/');
 	});
