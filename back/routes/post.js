@@ -1,5 +1,5 @@
 const express = require('express');
-const { Post, Comment } = require('../models');
+const { Post, Comment, User, Image } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 const router = express.Router();
 
@@ -9,7 +9,25 @@ router.post('/', isLoggedIn, async (req, res, next) => {
 			content: req.body.content,
 			UserId: req.user.id,
 		});
-		res.status(201).json(post); //프론트 saga로 전달
+		const fullPost = await User.findOne({
+			where: { id: post.id },
+			attributes: {
+				exclude: ['password'],
+			},
+			include: [
+				{
+					model: User,
+				},
+				{
+					model: Image,
+				},
+				{
+					model: Comment,
+				},
+			],
+		});
+
+		res.status(201).json(fullPost); //프론트 saga로 전달
 	} catch (error) {
 		console.error(error);
 		next(error);

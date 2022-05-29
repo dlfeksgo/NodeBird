@@ -37,7 +37,7 @@ app.use(passport.session());
 
 app.use(
 	cors({
-		origin: '*',
+		origin: 'http://localhost:3000',
 		credentials: true, //쿠키도 같이 전달
 	})
 );
