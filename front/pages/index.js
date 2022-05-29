@@ -5,6 +5,7 @@ import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import { useInView } from 'react-intersection-observer';
 
 const Home = () => {
@@ -14,6 +15,9 @@ const Home = () => {
 	const { mainPosts, loadPostsLoading } = useSelector((state) => state.post);
 
 	useEffect(() => {
+		dispatch({
+			type: LOAD_MY_INFO_REQUEST,
+		});
 		dispatch({
 			type: LOAD_POSTS_REQUEST,
 		});

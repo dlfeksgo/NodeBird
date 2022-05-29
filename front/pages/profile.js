@@ -11,16 +11,16 @@ import Router from 'next/router';
 const Profile = () => {
 	const { me } = useSelector((state) => state.user);
 
-	// useEffect(() => {
-	// 	if (!(me && me.id)) {
-	// 		Router.push('/');
-	// 	}
-	// }, []);
+	useEffect(() => {
+		if (!(me && me.id)) {
+			Router.push('/');
+		}
+	}, []);
 
-	if (!me) {
-		Router.push('/');
-		return null;
-	}
+	// if (!me) {
+	// 	Router.push('/');
+	// 	return null;
+	// }
 
 	// const followerList = [
 	// 	{ nickname: '희희' },
