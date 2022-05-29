@@ -9,9 +9,6 @@ const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 router.get('/', async (req, res, next) => {
 	try {
 		if (req.user) {
-			const user = await User.findOne({
-				where: { id: req.user.id },
-			});
 			const fullUserWithoutPassword = await User.findOne({
 				where: { id: req.user.id },
 				attributes: {

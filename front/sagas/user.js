@@ -80,8 +80,8 @@ export default function* userSaga() {
 		}
 	}
 
-	function logOutAPI(data) {
-		return axios.post('/user/logout', data); //백엔드 routes에서 받는다.
+	function logOutAPI() {
+		return axios.post('/user/logout'); //백엔드 routes에서 받는다.
 	}
 
 	function* logOut() {
