@@ -52,10 +52,19 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
 		}
 		const comment = await Comment.create({
 			content: req.body.content,
-			PostId: req.params.postId,
+			PostId: parseInt(req.params.postId, 10),
 			UserId: req.user.id,
 		});
-		res.status(201).json(comment); //프론트 saga로 전달
+		const fullComment = await Comment.findOne({
+			where: { id: comment.id },
+			include: [
+				{
+					model: User,
+					attributes: ['id', 'nickname'],
+				},
+			],
+		});
+		res.status(201).json(fullComment); //프론트 saga로 전달
 	} catch (error) {
 		console.error(error);
 		next(error);

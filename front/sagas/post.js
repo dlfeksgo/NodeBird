@@ -57,6 +57,7 @@ export default function* postSaga() {
 				data: result.data.id,
 			});
 		} catch (err) {
+			console.error(err);
 			yield put({
 				type: ADD_POST_FAILURE,
 				error: err.response.data,
@@ -96,6 +97,7 @@ export default function* postSaga() {
 				data: result.data,
 			});
 		} catch (err) {
+			console.error(err);
 			yield put({
 				type: ADD_COMMENT_FAILURE,
 				error: err.response.data,
