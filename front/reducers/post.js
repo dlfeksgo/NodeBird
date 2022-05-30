@@ -84,28 +84,28 @@ export const addPost = (data) => {
 	};
 };
 
-export const generateDummyPost = (number) =>
-	Array(number)
-		.fill()
-		.map(() => ({
-			id: shortid.generate(),
-			User: {
-				id: shortid.generate(),
-				nickname: faker.name.firstName(),
-			},
-			content: faker.lorem.paragraph(),
-			Images: [{ src: 'https://via.placeholder.com/150' }],
-			Comments: [
-				{
-					id: shortid.generate(),
-					User: {
-						id: shortid.generate(),
-						nickname: faker.name.firstName(),
-					},
-					content: faker.lorem.sentences(),
-				},
-			],
-		}));
+// export const generateDummyPost = (number) =>
+// 	Array(number)
+// 		.fill()
+// 		.map(() => ({
+// 			id: shortid.generate(),
+// 			User: {
+// 				id: shortid.generate(),
+// 				nickname: faker.name.firstName(),
+// 			},
+// 			content: faker.lorem.paragraph(),
+// 			Images: [{ src: 'https://via.placeholder.com/150' }],
+// 			Comments: [
+// 				{
+// 					id: shortid.generate(),
+// 					User: {
+// 						id: shortid.generate(),
+// 						nickname: faker.name.firstName(),
+// 					},
+// 					content: faker.lorem.sentences(),
+// 				},
+// 			],
+// 		}));
 
 const dummyPost = (data) => ({
 	id: data.id,
@@ -139,6 +139,7 @@ const reducer = (state = initialState, action) => {
 				break;
 			case LOAD_POSTS_SUCCESS:
 				draft.mainPosts = action.data.concat(draft.mainPosts);
+				// draft.mainPosts = draft.mainPosts.concat(action.data);
 				draft.loadPostsLoading = false;
 				draft.loadPostsDone = true;
 				break;

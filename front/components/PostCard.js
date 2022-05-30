@@ -26,7 +26,7 @@ const CardWrapper = styled.div`
 const PostCard = ({ post }) => {
 	const dispatch = useDispatch();
 	const { me } = useSelector((state) => state.user);
-	const { mainPosts, removePostLoading } = useSelector((state) => state.post);
+	const { removePostLoading } = useSelector((state) => state.post);
 	const id = me?.id;
 
 	const [liked, setLiked] = useState(false);
@@ -74,7 +74,7 @@ const PostCard = ({ post }) => {
 						key="more"
 						content={
 							<Button.Group>
-								{id && id === post.User.id ? (
+								{id && id === post.User?.id ? (
 									<>
 										<Button>수정</Button>
 										<Button
@@ -96,7 +96,7 @@ const PostCard = ({ post }) => {
 				]}
 			>
 				<Card.Meta
-					avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
+					avatar={<Avatar>{post.User?.nickname[0]}</Avatar>} //post.User.nickname[0]
 					title="Card title"
 					description={<PostCardContent postData={post.content} />}
 				/>
@@ -128,7 +128,7 @@ PostCard.propTypes = {
 		id: PropTypes.number,
 		User: PropTypes.object,
 		content: PropTypes.string,
-		createdAt: PropTypes.object,
+		createdAt: PropTypes.string,
 		Comments: PropTypes.arrayOf(PropTypes.any),
 		Images: PropTypes.arrayOf(PropTypes.any),
 	}),

@@ -9,25 +9,33 @@ router.post('/', isLoggedIn, async (req, res, next) => {
 			content: req.body.content,
 			UserId: req.user.id,
 		});
-		const fullPost = await User.findOne({
+		const fullPost = await Post.findOne({
 			where: { id: post.id },
-			attributes: {
-				exclude: ['password'],
-			},
 			include: [
-				{
-					model: User,
-				},
 				{
 					model: Image,
 				},
 				{
 					model: Comment,
+					include: [
+						{
+							model: User, // 댓글 작성자
+							attributes: ['id', 'nickname'],
+						},
+					],
+				},
+				{
+					model: User, // 게시글 작성자
+					attributes: ['id', 'nickname'],
+				},
+				{
+					model: User, // 좋아요 누른 사람
+					as: 'Likers',
+					attributes: ['id'],
 				},
 			],
 		});
-
-		res.status(201).json(fullPost); //프론트 saga로 전달
+		res.status(201).json(fullPost);
 	} catch (error) {
 		console.error(error);
 		next(error);

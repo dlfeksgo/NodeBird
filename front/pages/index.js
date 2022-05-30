@@ -39,29 +39,29 @@ const Home = () => {
 	// 	}
 	// }, [inView, loadPostsLoading, mainPosts]);
 
-	useEffect(() => {
-		function onScroll() {
-			// console.log(
-			// 	window.scrollY,
-			// 	document.documentElement.clientHeight,
-			// 	document.documentElement.scrollHeight
-			// );
-			if (
-				window.scrollY + document.documentElement.clientHeight >
-				document.documentElement.scrollHeight - 300
-			) {
-				if (!loadPostsLoading) {
-					dispatch({
-						type: LOAD_POSTS_REQUEST,
-					});
-				}
-			}
-		}
-		window.addEventListener('scroll', onScroll);
-		return () => {
-			window.removeEventListener('scroll', onScroll);
-		};
-	}, [mainPosts, loadPostsLoading]);
+	// useEffect(() => {
+	// 	function onScroll() {
+	// 		// console.log(
+	// 		// 	window.scrollY,
+	// 		// 	document.documentElement.clientHeight,
+	// 		// 	document.documentElement.scrollHeight
+	// 		// );
+	// 		if (
+	// 			window.scrollY + document.documentElement.clientHeight >
+	// 			document.documentElement.scrollHeight - 300
+	// 		) {
+	// 			if (!loadPostsLoading) {
+	// 				dispatch({
+	// 					type: LOAD_POSTS_REQUEST,
+	// 				});
+	// 			}
+	// 		}
+	// 	}
+	// 	window.addEventListener('scroll', onScroll);
+	// 	return () => {
+	// 		window.removeEventListener('scroll', onScroll);
+	// 	};
+	// }, [mainPosts, loadPostsLoading]);
 
 	return (
 		<>
