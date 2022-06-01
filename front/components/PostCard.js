@@ -32,7 +32,7 @@ const PostCard = ({ post }) => {
 	const { me } = useSelector((state) => state.user);
 	const { removePostLoading } = useSelector((state) => state.post);
 	const id = me?.id;
-	const liked = post.Likers.find((v) => v.id === id);
+	const liked = post.Likers?.find((v) => v.id === id);
 
 	// const [liked, setLiked] = useState(false);
 	// const likedToggle = useCallback(() => {

@@ -183,7 +183,9 @@ const reducer = (state = initialState, action) => {
 				draft.removePostError = null;
 				break;
 			case REMOVE_POST_SUCCESS:
-				draft.mainPosts = state.mainPosts.filter((v) => v.id !== action.data); //splice 써도 됨.
+				draft.mainPosts = state.mainPosts.filter(
+					(v) => v.id !== action.data.PostId
+				); //splice 써도 됨.
 				draft.removePostLoading = false;
 				draft.removePostDone = true;
 				break;

@@ -1,3 +1,4 @@
+import { ConsoleSqlOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { all, fork, call, put, delay, takeLatest } from 'redux-saga/effects';
 import {
@@ -71,18 +72,23 @@ export default function* postSaga() {
 		}
 	}
 
+	function removePostAPI(data) {
+		return axios.delete(`/post/${data}`);
+	}
+
 	function* removePost(action) {
-		yield delay(1000);
 		try {
+			const result = yield call(removePostAPI, action.data);
 			yield put({
 				type: REMOVE_POST_SUCCESS,
-				data: action.data,
+				data: result.data,
 			});
 			yield put({
 				type: REMOVE_POST_OF_ME,
-				data: action.data,
+				data: result.data,
 			});
 		} catch (err) {
+			console.error(err);
 			yield put({
 				type: REMOVE_POST_FAILURE,
 				error: err.response.data,

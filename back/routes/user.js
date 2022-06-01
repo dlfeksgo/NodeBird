@@ -109,4 +109,21 @@ router.post('/logout', isLoggedIn, (req, res) => {
 	res.send('빠잉~');
 });
 
+router.patch('/nickname', isLoggedIn, async (req, res, next) => {
+	try {
+		await User.update(
+			{
+				nickname: req.body.nickname, //1. 어떤걸 바꿀래 ?
+			},
+			{
+				where: { id: req.user.id }, //2. 어디에서 ?
+			}
+		);
+		res.status(200).json({ nickname: req.body.nickname });
+	} catch (error) {
+		console.error(error);
+		next(error);
+	}
+});
+
 module.exports = router;
