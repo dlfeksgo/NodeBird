@@ -169,7 +169,7 @@ const reducer = (state = initialState, action) => {
 				break;
 			case ADD_POST_SUCCESS:
 				// draft.mainPosts = [dummyPost(action.data), ...state.mainPosts];
-				draft.mainPosts.unshift(action.data);
+				draft.mainPosts.unshift(action.data.content);
 				draft.addPostLoadin = false;
 				draft.addPostDone = true;
 				break;

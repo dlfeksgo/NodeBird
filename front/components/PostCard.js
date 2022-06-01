@@ -68,7 +68,6 @@ const PostCard = ({ post }) => {
 		<CardWrapper>
 			<Card
 				extra={id && <FollowButton post={post} />}
-				// style={{ width: 300 }}
 				cover={post.Images[0] && <PostImages images={post.Images} />}
 				// cover={
 				// 	<img
