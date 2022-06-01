@@ -16,7 +16,11 @@ import CommentForm from './CommentForm';
 import PostImages from './PostImages';
 import PostCardContent from './PostCardContent';
 import FollowButton from './FollowButton';
-import { REMOVE_POST_REQUEST } from '../reducers/post';
+import {
+	LIKE_POST_REQUEST,
+	REMOVE_POST_REQUEST,
+	UNLIKE_POST_REQUEST,
+} from '../reducers/post';
 import { FOLLOW_REQUEST } from '../reducers/user';
 
 const CardWrapper = styled.div`
@@ -28,10 +32,24 @@ const PostCard = ({ post }) => {
 	const { me } = useSelector((state) => state.user);
 	const { removePostLoading } = useSelector((state) => state.post);
 	const id = me?.id;
+	const liked = post.Likers.find((v) => v.id === id);
 
-	const [liked, setLiked] = useState(false);
-	const likedToggle = useCallback(() => {
-		setLiked((prev) => !prev);
+	// const [liked, setLiked] = useState(false);
+	// const likedToggle = useCallback(() => {
+	// 	setLiked((prev) => !prev);
+	// }, []);
+
+	const onLike = useCallback(() => {
+		dispatch({
+			type: LIKE_POST_REQUEST,
+			data: post.id,
+		});
+	}, []);
+	const onUnLike = useCallback(() => {
+		dispatch({
+			type: UNLIKE_POST_REQUEST,
+			data: post.id,
+		});
 	}, []);
 
 	const onRemovePost = useCallback(() => {
@@ -64,10 +82,10 @@ const PostCard = ({ post }) => {
 						<HeartTwoTone
 							key="heart"
 							twoToneColor="#eb2f96"
-							onClick={likedToggle}
+							onClick={onUnLike}
 						/>
 					) : (
-						<HeartOutlined key="heart" onClick={likedToggle} />
+						<HeartOutlined key="heart" onClick={onLike} />
 					),
 					<MessageOutlined key="comment" onClick={commentToggle} />,
 					<Popover
@@ -129,8 +147,9 @@ PostCard.propTypes = {
 		User: PropTypes.object,
 		content: PropTypes.string,
 		createdAt: PropTypes.string,
-		Comments: PropTypes.arrayOf(PropTypes.any),
-		Images: PropTypes.arrayOf(PropTypes.any),
+		Comments: PropTypes.arrayOf(PropTypes.object),
+		Images: PropTypes.arrayOf(PropTypes.object),
+		Likers: PropTypes.arrayOf(PropTypes.object),
 	}),
 };
 
