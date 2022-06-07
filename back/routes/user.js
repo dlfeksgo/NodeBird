@@ -132,7 +132,20 @@ router.patch('/:userId/follow', async (req, res, next) => {
 			where: { id: req.params.userId }, //팔로우 할 사람 찾고
 		});
 		await user.addFollowers(req.user.id);
-		res.status(200).json({ UserId: req.params.userId });
+		res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+	} catch (error) {
+		console.error(error);
+		next(error);
+	}
+});
+
+router.delete('/:userId/follow', async (req, res, next) => {
+	try {
+		const user = await User.findOne({
+			where: { id: req.params.userId },
+		});
+		await user.removeFollowers(req.user.id);
+		res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
 	} catch (error) {
 		console.error(error);
 		next(error);

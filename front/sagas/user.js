@@ -23,6 +23,7 @@ import {
 	CHANGE_NICKNAME_SUCCESS,
 	CHANGE_NICKNAME_FAILURE,
 } from '../reducers/user';
+import { func } from 'prop-types';
 
 export default function* userSaga() {
 	function signUpAPI(data) {
@@ -141,15 +142,19 @@ export default function* userSaga() {
 		}
 	}
 
+	function unfollowAPI(data) {
+		return axios.delete(`/user/${data}/follow`);
+	}
+
 	function* unfollow(action) {
-		// const result = yield call(logOutAPI)
-		yield delay(1000);
 		try {
+			const result = yield call(unfollowAPI, action.data);
 			yield put({
 				type: UNFOLLOW_SUCCESS,
-				data: action.data, //post.User.id
+				data: result.data,
 			});
 		} catch (err) {
+			console.error(err);
 			yield put({
 				type: UNFOLLOW_FAILURE,
 				error: err.response.data,
