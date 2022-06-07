@@ -121,15 +121,19 @@ export default function* userSaga() {
 		}
 	}
 
+	function followAPI(data) {
+		return axios.patch(`user/${data}/follow`);
+	}
+
 	function* follow(action) {
-		// const result = yield call(logOutAPI)
-		yield delay(1000);
 		try {
+			const result = yield call(followAPI, action.data); //작성자id
 			yield put({
 				type: FOLLOW_SUCCESS,
-				data: action.data, //post.User.id
+				data: result.data, //{ UserId : req.params.userId}
 			});
 		} catch (err) {
+			console.error(err);
 			yield put({
 				type: FOLLOW_FAILURE,
 				error: err.response.data,

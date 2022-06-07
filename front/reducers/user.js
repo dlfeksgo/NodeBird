@@ -166,7 +166,7 @@ const reducer = (state = initialState, action) => {
 				draft.followLoading = false;
 				draft.followDone = true;
 				// draft.me.Followings = draft.me.Followings.unshift(action.data) //객체로 넣어야 하는데..
-				draft.me.Followings.push({ id: action.data });
+				draft.me.Followings.push({ id: action.data.UserId });
 				break;
 			case FOLLOW_FAILURE:
 				draft.followLoading = false;

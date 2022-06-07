@@ -96,7 +96,7 @@ router.post('/', isNotLoggedIn, async (req, res, next) => {
 		});
 		res.status(201).send('하이');
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 		next(error);
 	}
 });
@@ -120,6 +120,19 @@ router.patch('/nickname', isLoggedIn, async (req, res, next) => {
 			}
 		);
 		res.status(200).json({ nickname: req.body.nickname });
+	} catch (error) {
+		console.error(error);
+		next(error);
+	}
+});
+
+router.patch('/:userId/follow', async (req, res, next) => {
+	try {
+		const user = await User.findOne({
+			where: { id: req.params.userId }, //팔로우 할 사람 찾고
+		});
+		await user.addFollowers(req.user.id);
+		res.status(200).json({ UserId: req.params.userId });
 	} catch (error) {
 		console.error(error);
 		next(error);
