@@ -66,6 +66,9 @@ const initialState = {
 	addCommentLoading: false,
 	addCommentDone: false,
 	addCommentError: null,
+	uploadImagesLoading: false,
+	uploadImagesDone: false,
+	uploadImagesError: null,
 };
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
@@ -75,6 +78,10 @@ export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
+
+export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
+export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
+export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
 
 export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
 export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
@@ -192,6 +199,20 @@ const reducer = (state = initialState, action) => {
 			case REMOVE_POST_FAILURE:
 				draft.removePostLoading = false;
 				draft.removePostError = action.error;
+				break;
+			case UPLOAD_IMAGES_REQUEST:
+				draft.uploadImagesLoading = true;
+				draft.uploadImagesDone = false;
+				draft.uploadImagesError = null;
+				break;
+			case UPLOAD_IMAGES_SUCCESS:
+				draft.uploadImagesLoadin = false;
+				draft.uploadImagesDone = true;
+				draft.imagePaths = action.data; //업로드된 파일 이름들
+				break;
+			case UPLOAD_IMAGES_FAILURE:
+				draft.uploadImagesLoading = false;
+				draft.uploadImagesError = action.error;
 				break;
 			case ADD_COMMENT_REQUEST:
 				draft.addCommentLoading = true;
