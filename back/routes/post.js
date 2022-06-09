@@ -1,6 +1,7 @@
 const express = require('express');
 const { Post, Comment, User, Image } = require('../models');
 const { isLoggedIn } = require('./middlewares');
+const multer = require('multer');
 const router = express.Router();
 
 router.post('/', isLoggedIn, async (req, res, next) => {
@@ -40,6 +41,23 @@ router.post('/', isLoggedIn, async (req, res, next) => {
 		console.error(error);
 		next(error);
 	}
+});
+
+const upload = multer({
+	storage: multer.diskStorage({
+		destination(req, file, done) {
+			done(null, 'uploads');
+		},
+		filename(req, file, done) {
+			const ext = path.extname(file.originalname); //확장자
+			const basename = path.basename(file.originalname, ext); //파일명
+			done(null, basename + new Date().getTime() + ext);
+		},
+	}),
+	limits: { fileSize: 20 * 1024 * 1024 },
+});
+router.post('/images', isLoggedIn, upload.array('image'), async(req, res, next){
+	
 });
 
 router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
