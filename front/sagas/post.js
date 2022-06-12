@@ -57,10 +57,7 @@ export default function* postSaga() {
 			// const id = shortid.generate();
 			yield put({
 				type: ADD_POST_SUCCESS,
-				data: {
-					// id: id,
-					content: result.data,
-				},
+				data: result.data,
 			});
 			yield put({
 				type: ADD_POST_TO_ME,

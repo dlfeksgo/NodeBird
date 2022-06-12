@@ -15,17 +15,42 @@ try {
 	fs.mkdirSync('uploads');
 }
 
-router.post('/', isLoggedIn, async (req, res, next) => {
+const upload = multer({
+	storage: multer.diskStorage({
+		destination(req, file, done) {
+			done(null, 'uploads');
+		},
+		filename(req, file, done) {
+			const ext = path.extname(file.originalname); //확장자
+			const basename = path.basename(file.originalname, ext); //파일명
+			done(null, basename + '_' + new Date().getTime() + ext);
+		},
+	}),
+	limits: { fileSize: 20 * 1024 * 1024 },
+});
+
+router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
 	try {
 		const post = await Post.create({
 			content: req.body.content,
 			UserId: req.user.id,
 		});
+		if (req.body.image) {
+			if (Array.isArray(req.body.image)) {
+				const images = await Promise.all(
+					req.body.image.map((image) => Image.create({ src: image }))
+				);
+				await post.addImages(images);
+			} else {
+				const image = await Image.create({ src: req.body.image });
+				await post.addImages(image);
+			}
+		}
 		const fullPost = await Post.findOne({
 			where: { id: post.id },
 			include: [
 				{
-					model: Image,
+					model: Image, //post.Images로 들어온다.
 				},
 				{
 					model: Comment,
@@ -54,19 +79,6 @@ router.post('/', isLoggedIn, async (req, res, next) => {
 	}
 });
 
-const upload = multer({
-	storage: multer.diskStorage({
-		destination(req, file, done) {
-			done(null, 'uploads');
-		},
-		filename(req, file, done) {
-			const ext = path.extname(file.originalname); //확장자
-			const basename = path.basename(file.originalname, ext); //파일명
-			done(null, basename + new Date().getTime() + ext);
-		},
-	}),
-	limits: { fileSize: 20 * 1024 * 1024 },
-});
 router.post(
 	'/images',
 	isLoggedIn,

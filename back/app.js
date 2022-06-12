@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const path = require('path');
 
 const postsRouter = require('./routes/posts');
 const postRouter = require('./routes/post');
@@ -25,6 +26,8 @@ db.sequelize
 passportConfig();
 
 app.use(morgan('dev'));
+
+app.use('/', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

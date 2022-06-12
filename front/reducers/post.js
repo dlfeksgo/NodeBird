@@ -99,6 +99,8 @@ export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
 export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
 export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
 
+export const REMOVE_IMAGES = 'REMOVE_IMAGES';
+
 export const addPost = (data) => {
 	return {
 		type: ADD_POST_REQUEST,
@@ -154,6 +156,8 @@ const dummyComment = (data) => ({
 const reducer = (state = initialState, action) => {
 	return produce(state, (draft) => {
 		switch (action.type) {
+			case REMOVE_IMAGES:
+				draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
 			case LOAD_POSTS_REQUEST:
 				draft.loadPostsLoading = true;
 				draft.loadPostsDone = false;
@@ -176,7 +180,8 @@ const reducer = (state = initialState, action) => {
 				break;
 			case ADD_POST_SUCCESS:
 				// draft.mainPosts = [dummyPost(action.data), ...state.mainPosts];
-				draft.mainPosts.unshift(action.data.content);
+				draft.mainPosts.unshift(action.data);
+				draft.imagePaths = [];
 				draft.addPostLoadin = false;
 				draft.addPostDone = true;
 				break;
