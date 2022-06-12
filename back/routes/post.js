@@ -129,6 +129,47 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
 	}
 });
 
+router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {
+	//리트윗한 게시글을 찾아서 나의 새로운 게시글에 리트윗 데이터를 넣는다.
+	try {
+		const post = await Post.findOne({
+			where: { id: req.params.postId },
+			include: [
+				{
+					model: Post,
+					as: 'Retweet',
+				},
+			],
+		});
+		if (!post) {
+			return res.status(403).send('존재하지 않는 게시글입니다.');
+		}
+		if (
+			req.user.id === post.UserId ||
+			(post.Retweet && post.Retweet.UserId === req.user.id)
+		) {
+			return res.status(403).send('자신의 글은 리트윗할 수 없습니다.');
+		}
+		const retweetTargetId = post.RetweetId || post.id;
+		const exPost = await post.findOne({
+			where: { UserId: req.user.id, RetweetId: retweetTargetId },
+		});
+		if (exPost) {
+			return res.status(403).send('이미 리트윗 했습니다.');
+		}
+		const retweet = await Post.create({
+			UserId: req.user.id,
+			RetweetId: retweetTargetId,
+			content: 'retweet',
+		});
+		// await post.addRetweet(req.user.id)
+		res.status(200).json(retweet);
+	} catch (error) {
+		console.error(error);
+		next(error);
+	}
+});
+
 router.patch('/:postId/like', isLoggedIn, async (req, res, next) => {
 	try {
 		const post = await Post.findOne({

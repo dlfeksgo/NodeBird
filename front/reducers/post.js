@@ -69,6 +69,9 @@ const initialState = {
 	uploadImagesLoading: false,
 	uploadImagesDone: false,
 	uploadImagesError: null,
+	retweetLoading: false,
+	retweetDone: false,
+	retweetError: null,
 };
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
@@ -98,6 +101,10 @@ export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
 export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
 export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
 export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
+
+export const RETWEET_REQUEST = 'RETWEET_REQUEST';
+export const RETWEET_SUCCESS = 'RETWEET_SUCCESS';
+export const RETWEET_FAILURE = 'RETWEET_FAILURE';
 
 export const REMOVE_IMAGES = 'REMOVE_IMAGES';
 
@@ -283,6 +290,20 @@ const reducer = (state = initialState, action) => {
 			case UNLIKE_POST_FAILURE:
 				draft.unLikePostLoading = false;
 				draft.unLikePostError = action.error;
+				break;
+			case RETWEET_REQUEST:
+				draft.retweetLoading = true;
+				draft.retweetDone = false;
+				draft.retweetError = null;
+				break;
+			case RETWEET_SUCCESS: {
+				draft.retweetLoading = false;
+				draft.retweetDone = true;
+				break;
+			}
+			case RETWEET_FAILURE:
+				draft.retweetLoading = false;
+				draft.retweetError = action.error;
 				break;
 			default:
 				// return state;
