@@ -73,9 +73,6 @@ const PostCard = ({ post }) => {
 		if (!id) {
 			return alert('로그인이 필요합니다.');
 		}
-		if (id === post.User.id) {
-			return alert('내가 작성한 게시글을 리트윗 할 수 없어요');
-		}
 		return dispatch({
 			type: RETWEET_REQUEST,
 			data: post.id,
@@ -135,11 +132,27 @@ const PostCard = ({ post }) => {
 					</Popover>,
 				]}
 			>
-				<Card.Meta
-					avatar={<Avatar>{post.User?.nickname[0]}</Avatar>} //post.User.nickname[0]
-					title="Card title"
-					description={<PostCardContent postData={post.content} />}
-				/>
+				{post.RetweetId && post.Retweet ? (
+					<Card
+						cover={
+							post.Retweet.Images[0] && (
+								<PostImages images={post.Retweet.Images} />
+							)
+						}
+					>
+						<Card.Meta
+							avatar={<Avatar>{post.Retweet.User?.nickname[0]}</Avatar>}
+							title={post.Retweet.User.nickname}
+							description={<PostCardContent postData={post.Retweet.content} />}
+						/>
+					</Card>
+				) : (
+					<Card.Meta
+						avatar={<Avatar>{post.User?.nickname[0]}</Avatar>} //post.User.nickname[0]
+						title={post.User?.nickname}
+						description={<PostCardContent postData={post.content} />}
+					/>
+				)}
 			</Card>
 			{commentFormOpened && (
 				<>

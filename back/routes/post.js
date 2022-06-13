@@ -133,11 +133,12 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {
 	//리트윗한 게시글을 찾아서 나의 새로운 게시글에 리트윗 데이터를 넣는다.
 	try {
 		const post = await Post.findOne({
+			//리트윗할 게시물 찾기
 			where: { id: req.params.postId },
 			include: [
 				{
 					model: Post,
-					as: 'Retweet',
+					as: 'Retweet', //post안에 Retweet이라는 항목이 생성된다.
 				},
 			],
 		});
@@ -151,7 +152,7 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {
 			return res.status(403).send('자신의 글은 리트윗할 수 없습니다.');
 		}
 		const retweetTargetId = post.RetweetId || post.id;
-		const exPost = await post.findOne({
+		const exPost = await Post.findOne({
 			where: { UserId: req.user.id, RetweetId: retweetTargetId },
 		});
 		if (exPost) {
@@ -162,8 +163,46 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {
 			RetweetId: retweetTargetId,
 			content: 'retweet',
 		});
-		// await post.addRetweet(req.user.id)
-		res.status(200).json(retweet);
+		const retweetWithPrevPost = await Post.findOne({
+			where: { id: retweet.id },
+			include: [
+				{
+					model: Post,
+					as: 'Retweet', //Retweet이라는 이름으로 Post의 테이블 구조를 가져옴
+					include: [
+						{
+							model: User,
+							attributes: ['id', 'nickname'],
+						},
+						{
+							model: Image,
+						},
+					],
+				},
+				{
+					model: User,
+					attributes: ['id', 'nickname'],
+				},
+				{
+					model: User,
+					as: 'Likers',
+					attributes: ['id'],
+				},
+				{
+					model: Image,
+				},
+				{
+					model: Comment,
+					include: [
+						{
+							model: User,
+							attributes: ['id', 'nickname'],
+						},
+					],
+				},
+			],
+		});
+		res.status(200).json(retweetWithPrevPost);
 	} catch (error) {
 		console.error(error);
 		next(error);
