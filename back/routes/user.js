@@ -105,8 +105,8 @@ router.post('/logout', isLoggedIn, (req, res) => {
 	req.logout(() => {
 		res.redirect('/');
 	});
-	req.session.destroy();
-	res.send('빠잉~');
+	// req.session.destroy();
+	// res.send('빠잉~');
 });
 
 router.patch('/nickname', isLoggedIn, async (req, res, next) => {

@@ -163,6 +163,7 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {
 			RetweetId: retweetTargetId,
 			content: 'retweet',
 		});
+		console.log(retweet);
 		const retweetWithPrevPost = await Post.findOne({
 			where: { id: retweet.id },
 			include: [

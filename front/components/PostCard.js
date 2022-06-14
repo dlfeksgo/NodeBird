@@ -131,6 +131,9 @@ const PostCard = ({ post }) => {
 						<EllipsisOutlined key="ellipsis" />
 					</Popover>,
 				]}
+				title={
+					post.RetweetId ? `${post.User.nickname}님이 리트윗 했습니다.` : null
+				}
 			>
 				{post.RetweetId && post.Retweet ? (
 					<Card
