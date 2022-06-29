@@ -22,6 +22,9 @@ import {
 	CHANGE_NICKNAME_REQUEST,
 	CHANGE_NICKNAME_SUCCESS,
 	CHANGE_NICKNAME_FAILURE,
+	LOAD_USER_REQUEST,
+	LOAD_USER_SUCCESS,
+	LOAD_USER_FAILURE,
 } from '../reducers/user';
 import { func } from 'prop-types';
 
@@ -60,6 +63,25 @@ export default function* userSaga() {
 		} catch (err) {
 			yield put({
 				type: LOAD_MY_INFO_FAILURE,
+				error: err.response.data,
+			});
+		}
+	}
+
+	function loadUserAPI(data) {
+		return axios.get(`/user/${data}`);
+	}
+
+	function* loadUser(action) {
+		try {
+			const result = yield call(loadUserAPI, action.data);
+			yield put({
+				type: LOAD_USER_SUCCESS,
+				data: result.data,
+			});
+		} catch (err) {
+			yield put({
+				type: LOAD_USER_FAILURE,
 				error: err.response.data,
 			});
 		}
@@ -166,6 +188,10 @@ export default function* userSaga() {
 		yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
 	}
 
+	function* watchLoadUser() {
+		yield takeLatest(LOAD_USER_REQUEST, loadUser);
+	}
+
 	function* watchSignUp() {
 		yield takeLatest(SIGN_UP_REQUEST, signUp);
 	}
@@ -193,6 +219,7 @@ export default function* userSaga() {
 	yield all([
 		fork(watchChangeNickname),
 		fork(watchLoadMyInfo),
+		fork(watchLoadUser),
 		fork(watchLogin),
 		fork(watchLogOut),
 		fork(watchSignUp),
