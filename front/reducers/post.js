@@ -45,6 +45,7 @@ import produce from 'immer';
 const initialState = {
 	mainPosts: [],
 	imagePaths: [],
+	hasMorePosts: true,
 	likePostLoading: false,
 	likePostDone: false,
 	likePostError: null,
@@ -54,7 +55,6 @@ const initialState = {
 	loadPostsLoading: false,
 	loadPostsDone: false,
 	loadPostsError: null,
-	hasMorePosts: true,
 	addPostLoading: false,
 	addPostDone: false,
 	addPostError: null,
@@ -169,8 +169,9 @@ const reducer = (state = initialState, action) => {
 				draft.loadPostsError = null;
 				break;
 			case LOAD_POSTS_SUCCESS:
-				draft.mainPosts = action.data.concat(draft.mainPosts);
-				// draft.mainPosts = draft.mainPosts.concat(action.data);
+				// draft.mainPosts = action.data.concat(draft.mainPosts);
+				draft.mainPosts = draft.mainPosts.concat(action.data);
+				draft.hasMorePosts = action.data.length === 10;
 				draft.loadPostsLoading = false;
 				draft.loadPostsDone = true;
 				break;

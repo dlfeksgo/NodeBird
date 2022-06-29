@@ -8,11 +8,15 @@ import { LOAD_POSTS_REQUEST } from '../reducers/post';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import { useInView } from 'react-intersection-observer';
 
+import { END } from 'redux-saga';
+import wrapper from '../store/configureStore';
+
 const Home = () => {
 	const dispatch = useDispatch();
 	const [ref, inView] = useInView();
 	const { me } = useSelector((state) => state.user);
-	const { mainPosts, retweetError } = useSelector((state) => state.post);
+	const { mainPosts, retweetError, hasMorePosts, loadPostsLoading } =
+		useSelector((state) => state.post);
 
 	useEffect(() => {
 		if (retweetError) {
@@ -29,21 +33,16 @@ const Home = () => {
 		});
 	}, []);
 
-	// useEffect(() => {
-	// 	console.log(inView);
-	// 	// console.log(
-	// 	// 	window.scrollY,
-	// 	// 	document.documentElement.clientHeight,
-	// 	// 	document.documentElement.scrollHeight
-	// 	// );
-	// 	if (inView && !loadPostsLoading) {
-	// 		// const lastId = mainPosts[mainPosts.length - 1]?.id;
-	// 		dispatch({
-	// 			type: LOAD_POSTS_REQUEST,
-	// 			// lastId,
-	// 		});
-	// 	}
-	// }, [inView, loadPostsLoading, mainPosts]);
+	useEffect(() => {
+		console.log(inView);
+		if (inView && hasMorePosts && !loadPostsLoading) {
+			const lastId = mainPosts[mainPosts.length - 1]?.id;
+			dispatch({
+				type: LOAD_POSTS_REQUEST,
+				lastId,
+			});
+		}
+	}, [inView, hasMorePosts, loadPostsLoading, mainPosts]);
 
 	// useEffect(() => {
 	// 	function onScroll() {
@@ -80,10 +79,26 @@ const Home = () => {
 				{mainPosts.map((v) => {
 					return <PostCard key={v.id} post={v} />;
 				})}
-				{/* <div ref={!loadPostsLoading ? ref : undefined} /> */}
+				<div
+					style={{ height: '50px' }}
+					ref={hasMorePosts && !loadPostsLoading ? ref : undefined}
+				/>
 			</AppLayout>
 		</>
 	);
 };
+
+// export const getServerSideProps = wrapper.getServerSideProps(
+// 	async (context) => {
+// 		context.store.dispatch({
+// 			type: LOAD_MY_INFO_REQUEST,
+// 		});
+// 		context.store.dispatch({
+// 			type: LOAD_POSTS_REQUEST,
+// 		});
+// 		context.store.dispatch(END);
+// 		await context.store.sagaTask.toPromise();
+// 	}
+// );
 
 export default Home;
