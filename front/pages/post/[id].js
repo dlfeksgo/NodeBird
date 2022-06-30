@@ -6,6 +6,8 @@ import { END } from 'redux-saga';
 import wrapper from '../../store/configureStore';
 import axios from 'axios';
 
+import Head from 'next/head';
+
 import PostCard from '../../components/PostCard';
 import { useSelector } from 'react-redux';
 
@@ -19,6 +21,27 @@ const Post = () => {
 	return (
 		<>
 			<AppLayout>
+				<Head>
+					<title>{singlePost.User.nickname}님의 게시글입니다</title>
+					<meta name="description" content={singlePost.content}></meta>
+					<meta
+						property="og:title"
+						content={`${singlePost.content}님의 게시글`}
+					></meta>
+					<meta property="og:description" content={singlePost.content}></meta>
+					<meta
+						property="og:image"
+						content={
+							singlePost.Images[0]
+								? singlePost.Images[0].src
+								: 'https://nodebird.com/favicon.ico'
+						}
+					></meta>
+					<meta
+						property="og:url"
+						content={`https://nodebird.com/post/${id}`}
+					></meta>
+				</Head>
 				<PostCard post={singlePost} />
 			</AppLayout>
 		</>
