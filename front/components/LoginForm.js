@@ -5,6 +5,16 @@ import useInput from '../hooks/useInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginRequestAction } from '../reducers/user';
 
+import styled from 'styled-components';
+
+const ButtonWrapper = styled.div`
+	margin-top: 10px;
+`;
+
+const FormWrapper = styled(Form)`
+	padding: 10px;
+`;
+
 const LoginForm = () => {
 	const dispatch = useDispatch();
 	const [email, onChangeEmail] = useInput('');
@@ -23,7 +33,7 @@ const LoginForm = () => {
 	}, [logInError]);
 
 	return (
-		<Form onFinish={onSubmitForm}>
+		<FormWrapper onFinish={onSubmitForm}>
 			<div>
 				<label htmlFor="user-email">이메일</label>
 				<Input
@@ -45,16 +55,18 @@ const LoginForm = () => {
 				></Input>
 			</div>
 			<div>
-				<Button type="primary" htmlType="submit" loading={logInLoading}>
-					로그인
-				</Button>
-				<Link href="/signup">
-					<a>
-						<Button>회원가입</Button>
-					</a>
-				</Link>
+				<ButtonWrapper>
+					<Button type="primary" htmlType="submit" loading={logInLoading}>
+						로그인
+					</Button>
+					<Link href="/signup">
+						<a>
+							<Button>회원가입</Button>
+						</a>
+					</Link>
+				</ButtonWrapper>
 			</div>
-		</Form>
+		</FormWrapper>
 	);
 };
 
