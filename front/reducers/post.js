@@ -45,6 +45,7 @@ import produce from 'immer';
 const initialState = {
 	mainPosts: [],
 	imagePaths: [],
+	singlePost: null,
 	hasMorePosts: true,
 	likePostLoading: false,
 	likePostDone: false,
@@ -52,6 +53,9 @@ const initialState = {
 	unLikePostLoading: false,
 	unLikePostDone: false,
 	unLikePostError: null,
+	loadPostLoading: false,
+	loadPostDone: false,
+	loadPostError: null,
 	loadPostsLoading: false,
 	loadPostsDone: false,
 	loadPostsError: null,
@@ -71,6 +75,10 @@ const initialState = {
 	retweetDone: false,
 	retweetError: null,
 };
+
+export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
+export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
+export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
@@ -163,6 +171,20 @@ const reducer = (state = initialState, action) => {
 		switch (action.type) {
 			case REMOVE_IMAGES:
 				draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
+			case LOAD_POST_REQUEST:
+				draft.loadPostLoading = true;
+				draft.loadPostDone = false;
+				draft.loadPostError = null;
+				break;
+			case LOAD_POST_SUCCESS:
+				draft.singlePost = action.data;
+				draft.loadPostLoading = false;
+				draft.loadPostDone = true;
+				break;
+			case LOAD_POST_FAILURE:
+				draft.loadPostLoading = false;
+				draft.loadPostError = action.error;
+				break;
 			case LOAD_POSTS_REQUEST:
 				draft.loadPostsLoading = true;
 				draft.loadPostsDone = false;
