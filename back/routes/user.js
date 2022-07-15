@@ -54,7 +54,7 @@ router.get('/followers', async (req, res, next) => {
 		}
 		const followers = await user.getFollowers({
 			attributes: ['id', 'nickname'],
-			// limit: parseInt(req.query.limit, 10),
+			limit: 3,
 		});
 		res.status(200).json(followers);
 	} catch (error) {
@@ -73,7 +73,7 @@ router.get('/followings', async (req, res, next) => {
 		}
 		const followings = await user.getFollowings({
 			attributes: ['id', 'nickname'],
-			// limit: parseInt(req.query.limit, 10),
+			limit: 3,
 		});
 		res.status(200).json(followings);
 	} catch (error) {
