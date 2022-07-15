@@ -43,6 +43,45 @@ router.get('/', async (req, res, next) => {
 	}
 });
 
+//팔로우&팔로잉 정보 가져오기
+router.get('/followers', async (req, res, next) => {
+	try {
+		const user = await User.findOne({
+			where: { id: req.user.id },
+		});
+		if (!user) {
+			res.status(403).send('없는 사람을 찾으려고 하시네요?');
+		}
+		const followers = await user.getFollowers({
+			attributes: ['id', 'nickname'],
+			// limit: parseInt(req.query.limit, 10),
+		});
+		res.status(200).json(followers);
+	} catch (error) {
+		console.error(error);
+		next(error);
+	}
+});
+
+router.get('/followings', async (req, res, next) => {
+	try {
+		const user = await User.findOne({
+			where: { id: req.user.id },
+		});
+		if (!user) {
+			res.status(403).send('없는 사람을 찾으려고 하시네요?');
+		}
+		const followings = await user.getFollowings({
+			attributes: ['id', 'nickname'],
+			// limit: parseInt(req.query.limit, 10),
+		});
+		res.status(200).json(followings);
+	} catch (error) {
+		console.error(error);
+		next(error);
+	}
+});
+
 //user/1
 router.get('/:userId', async (req, res, next) => {
 	try {

@@ -46,6 +46,14 @@ export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
 export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
 export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
 
+export const LOAD_FOLLOWERS_SUCCESS = 'LOAD_FOLLOWERS_SUCCESS';
+export const LOAD_FOLLOWERS_REQUEST = 'LOAD_FOLLOWERS_REQUEST';
+export const LOAD_FOLLOWERS_FAILURE = 'LOAD_FOLLOWERS_FAILURE';
+
+export const LOAD_FOLLOWINGS_SUCCESS = 'LOAD_FOLLOWINGS_SUCCESS';
+export const LOAD_FOLLOWINGS_REQUEST = 'LOAD_FOLLOWINGS_REQUEST';
+export const LOAD_FOLLOWINGS_FAILURE = 'LOAD_FOLLOWINGS_FAILURE';
+
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
 export const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
@@ -110,7 +118,7 @@ const reducer = (state = initialState, action) => {
 				break;
 			case LOAD_MY_INFO_FAILURE:
 				draft.loadMyInfoLoading = false;
-				draft.logInError = action.error;
+				draft.loadMyInfoError = action.error;
 				break;
 			case LOAD_USER_REQUEST:
 				draft.loadUserLoading = true;
@@ -124,7 +132,35 @@ const reducer = (state = initialState, action) => {
 				break;
 			case LOAD_USER_FAILURE:
 				draft.loadUserLoading = false;
-				draft.logInError = action.error;
+				draft.loadUserError = action.error;
+				break;
+			case LOAD_FOLLOWERS_REQUEST:
+				draft.loadFollowersLoading = true;
+				draft.loadFollowersDone = false;
+				draft.loadFollowersError = null;
+				break;
+			case LOAD_FOLLOWERS_SUCCESS:
+				draft.loadFollowersLoading = false;
+				draft.loadFollowersDone = true;
+				draft.me.Followers = action.data;
+				break;
+			case LOAD_FOLLOWERS_FAILURE:
+				draft.loadFollowersLoading = false;
+				draft.loadFollowersError = action.error;
+				break;
+			case LOAD_FOLLOWINGS_REQUEST:
+				draft.loadFollowingsLoading = true;
+				draft.loadFollowingsDone = false;
+				draft.loadFollowingsError = null;
+				break;
+			case LOAD_FOLLOWINGS_SUCCESS:
+				draft.loadFollowingsLoading = false;
+				draft.loadFollowingsDone = true;
+				draft.me.Followings = action.data;
+				break;
+			case LOAD_FOLLOWINGS_FAILURE:
+				draft.loadFollowingsLoading = false;
+				draft.loadFollowingsError = action.error;
 				break;
 			case LOG_IN_REQUEST:
 				draft.logInLoading = true;

@@ -25,6 +25,12 @@ import {
 	LOAD_USER_REQUEST,
 	LOAD_USER_SUCCESS,
 	LOAD_USER_FAILURE,
+	LOAD_FOLLOWINGS_REQUEST,
+	LOAD_FOLLOWINGS_SUCCESS,
+	LOAD_FOLLOWINGS_FAILURE,
+	LOAD_FOLLOWERS_REQUEST,
+	LOAD_FOLLOWERS_SUCCESS,
+	LOAD_FOLLOWERS_FAILURE,
 } from '../reducers/user';
 import { func } from 'prop-types';
 
@@ -82,6 +88,44 @@ export default function* userSaga() {
 		} catch (err) {
 			yield put({
 				type: LOAD_USER_FAILURE,
+				error: err.response.data,
+			});
+		}
+	}
+
+	function loadFollowersAPI(data) {
+		return axios.get('/user/followers', data);
+	}
+
+	function* loadFollowers(action) {
+		try {
+			const result = yield call(loadFollowersAPI, action.data);
+			yield put({
+				type: LOAD_FOLLOWERS_SUCCESS,
+				data: result.data,
+			});
+		} catch (err) {
+			yield put({
+				type: LOAD_FOLLOWERS_FAILURE,
+				error: err.response.data,
+			});
+		}
+	}
+
+	function loadFollowingsAPI(data) {
+		return axios.get('/user/followings');
+	}
+
+	function* loadFollowings(action) {
+		try {
+			const result = yield call(loadFollowingsAPI, action.data);
+			yield put({
+				type: LOAD_FOLLOWINGS_SUCCESS,
+				data: result.data,
+			});
+		} catch (err) {
+			yield put({
+				type: LOAD_FOLLOWINGS_FAILURE,
 				error: err.response.data,
 			});
 		}
@@ -192,6 +236,14 @@ export default function* userSaga() {
 		yield takeLatest(LOAD_USER_REQUEST, loadUser);
 	}
 
+	function* watchLoadFollowers() {
+		yield takeLatest(LOAD_FOLLOWERS_REQUEST, loadFollowers);
+	}
+
+	function* watchLoadFollowings() {
+		yield takeLatest(LOAD_FOLLOWINGS_REQUEST, loadFollowings);
+	}
+
 	function* watchSignUp() {
 		yield takeLatest(SIGN_UP_REQUEST, signUp);
 	}
@@ -220,6 +272,8 @@ export default function* userSaga() {
 		fork(watchChangeNickname),
 		fork(watchLoadMyInfo),
 		fork(watchLoadUser),
+		fork(watchLoadFollowers),
+		fork(watchLoadFollowings),
 		fork(watchLogin),
 		fork(watchLogOut),
 		fork(watchSignUp),

@@ -4,7 +4,7 @@ import Head from 'next/head';
 import NicknameEditForm from '../components/NicknameEditForm';
 import FollowList from '../components/FollowList';
 import AppLayout from '../components/AppLayout';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 // import { Router } from 'next/dist/client/router';
 import Router from 'next/router';
 
@@ -12,9 +12,14 @@ import axios from 'axios';
 import wrapper from '../store/configureStore';
 import { END } from 'redux-saga';
 
-import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
+import {
+	LOAD_MY_INFO_REQUEST,
+	LOAD_FOLLOWERS_REQUEST,
+	LOAD_FOLLOWINGS_REQUEST,
+} from '../reducers/user';
 
 const Profile = () => {
+	const dispatch = useDispatch();
 	const { me } = useSelector((state) => state.user);
 
 	useEffect(() => {
@@ -23,10 +28,14 @@ const Profile = () => {
 		}
 	}, []);
 
-	// if (!me) {
-	// 	Router.push('/');
-	// 	return null;
-	// }
+	useEffect(() => {
+		dispatch({
+			type: LOAD_FOLLOWERS_REQUEST,
+		});
+		dispatch({
+			type: LOAD_FOLLOWINGS_REQUEST,
+		});
+	}, []);
 
 	// const followerList = [
 	// 	{ nickname: '희희' },
