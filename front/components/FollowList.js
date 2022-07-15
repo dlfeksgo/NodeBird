@@ -13,7 +13,7 @@ const MoreBtn = styled.div`
 	text-align: center;
 `;
 
-const FollowList = ({ header, data }) => {
+const FollowList = ({ header, data, onClickMore, loading }) => {
 	return (
 		<ListStyle
 			header={<div>{header}</div>}
@@ -21,7 +21,9 @@ const FollowList = ({ header, data }) => {
 			size="small"
 			loadMore={
 				<MoreBtn>
-					<Button>더보기</Button>
+					<Button onClick={onClickMore} loading={loading}>
+						더보기
+					</Button>
 				</MoreBtn>
 			}
 			grid={{
@@ -43,7 +45,9 @@ const FollowList = ({ header, data }) => {
 
 FollowList.propTypes = {
 	header: PropTypes.string.isRequired,
-	data: PropTypes.array.isRequired,
+	// data: PropTypes.array.isRequired,
+	onClickMore: PropTypes.func.isRequired,
+	loading: PropTypes.bool.isRequired,
 };
 
 export default FollowList;
