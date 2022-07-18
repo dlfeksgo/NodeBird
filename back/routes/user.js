@@ -24,12 +24,12 @@ router.get('/', async (req, res, next) => {
 					{
 						model: User,
 						as: 'Followings',
-						attributes: ['id'],
+						attributes: ['id', 'nickname'],
 					},
 					{
 						model: User,
 						as: 'Followers',
-						attributes: ['id'],
+						attributes: ['id', 'nickname'],
 					},
 				],
 			});
@@ -53,7 +53,6 @@ router.get('/followers', async (req, res, next) => {
 			res.status(403).send('없는 사람을 찾으려고 하시네요?');
 		}
 		const followers = await user.getFollowers({
-			attributes: ['id', 'nickname'],
 			limit: parseInt(req.query.limit, 10),
 		});
 		res.status(200).json(followers);
@@ -72,7 +71,6 @@ router.get('/followings', async (req, res, next) => {
 			res.status(403).send('없는 사람을 찾으려고 하시네요?');
 		}
 		const followings = await user.getFollowings({
-			attributes: ['id', 'nickname'],
 			limit: parseInt(req.query.limit, 10),
 		});
 		res.status(200).json(followings);
@@ -202,14 +200,17 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
 				include: [
 					{
 						model: Post,
+						attributes: ['id'],
 					},
 					{
 						model: User,
 						as: 'Followings',
+						attributes: ['id'],
 					},
 					{
 						model: User,
 						as: 'Followers',
+						attributes: ['id'],
 					},
 				],
 			});

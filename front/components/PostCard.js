@@ -12,6 +12,8 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
+import Link from 'next/link';
+
 import CommentForm from './CommentForm';
 import PostImages from './PostImages';
 import PostCardContent from './PostCardContent';
@@ -144,14 +146,26 @@ const PostCard = ({ post }) => {
 						}
 					>
 						<Card.Meta
-							avatar={<Avatar>{post.Retweet.User?.nickname[0]}</Avatar>}
+							avatar={
+								<Link href={`/user/${post.Retweet.User.id}`}>
+									<a>
+										<Avatar>{post.Retweet.User?.nickname[0]}</Avatar>
+									</a>
+								</Link>
+							}
 							title={post.Retweet.User.nickname}
 							description={<PostCardContent postData={post.Retweet.content} />}
 						/>
 					</Card>
 				) : (
 					<Card.Meta
-						avatar={<Avatar>{post.User?.nickname[0]}</Avatar>} //post.User.nickname[0]
+						avatar={
+							<Link href={`/user/${post.User.id}`}>
+								<a>
+									<Avatar>{post.User?.nickname[0]}</Avatar>
+								</a>
+							</Link>
+						} //post.User.nickname[0]
 						title={post.User?.nickname}
 						description={<PostCardContent postData={post.content} />}
 					/>
@@ -166,7 +180,13 @@ const PostCard = ({ post }) => {
 						renderItem={(item) => (
 							<List.Item>
 								<List.Item.Meta
-									avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+									avatar={
+										<Link href={`/user/${item.User.id}`}>
+											<a>
+												<Avatar>{item.User.nickname[0]}</Avatar>
+											</a>
+										</Link>
+									}
 									title={item.User.nickname}
 									description={item.content}
 								/>

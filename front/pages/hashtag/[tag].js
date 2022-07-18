@@ -34,12 +34,12 @@ const Hashtag = () => {
 			});
 		}
 	}, [inView, hasMorePosts, loadPostsLoading, mainPosts]);
-
+	//'{mainPosts[0].Hashtags[0].name}' 검색결과
 	return (
 		<>
 			<AppLayout>
 				<Head>
-					<title>'{mainPosts[0].Hashtags[0].name}' 검색결과</title>
+					<title>검색결과</title>
 				</Head>
 				{mainPosts.map((c) => (
 					<PostCard key={c.id} post={c} />

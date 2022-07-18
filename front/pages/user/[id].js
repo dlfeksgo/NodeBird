@@ -41,20 +41,20 @@ const User = () => {
 			<AppLayout>
 				<Head>
 					<title>
-						{userInfo.nickname}
+						{userInfo?.nickname}
 						님의 글
 					</title>
 					<meta
 						name="description"
-						content={`${userInfo.nickname}님의 게시글`}
+						content={`${userInfo?.nickname}님의 게시글`}
 					/>
 					<meta
 						property="og:title"
-						content={`${userInfo.nickname}님의 게시글`}
+						content={`${userInfo?.nickname}님의 게시글`}
 					/>
 					<meta
 						property="og:description"
-						content={`${userInfo.nickname}님의 게시글`}
+						content={`${userInfo?.nickname}님의 게시글`}
 					/>
 					<meta
 						property="og:image"
