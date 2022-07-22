@@ -20,13 +20,6 @@ const CommentForm = ({ post }) => {
 	const inputRef = useRef();
 
 	const [comment, onChangeCommnets, setComment] = useInput();
-	// const [commentText, setCommentText] = useState('');
-	// const onChangeCommnets = useCallback(
-	// 	(e) => {
-	// 		setCommentText(e.target.value);
-	// 	},
-	// 	[commentText]
-	// );
 
 	useEffect(() => {
 		if (addCommentDone) {

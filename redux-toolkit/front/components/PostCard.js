@@ -20,11 +20,11 @@ import PostCardContent from './PostCardContent';
 import FollowButton from './FollowButton';
 import {
 	LIKE_POST_REQUEST,
-	REMOVE_POST_REQUEST,
 	RETWEET_REQUEST,
 	UNLIKE_POST_REQUEST,
 } from '../reducers/post';
 import { FOLLOW_REQUEST } from '../reducers/user';
+import { removePost, retweet } from '../actions/post';
 
 const CardWrapper = styled.div`
 	margin-bottom: 20px;
@@ -65,20 +65,22 @@ const PostCard = ({ post }) => {
 		if (!id) {
 			return alert('로그인이 필요합니다.');
 		}
-		return dispatch({
-			type: REMOVE_POST_REQUEST,
-			data: post.id,
-		});
+		dispatch(
+			removePost({
+				postId: post.id,
+			})
+		);
 	}, [id]);
 
 	const onRetweet = useCallback(() => {
 		if (!id) {
 			return alert('로그인이 필요합니다.');
 		}
-		return dispatch({
-			type: RETWEET_REQUEST,
-			data: post.id,
-		});
+		dispatch(
+			retweet({
+				postId: post.id,
+			})
+		);
 	}, [id]);
 
 	const [commentFormOpened, setCommentFormOpened] = useState(false);

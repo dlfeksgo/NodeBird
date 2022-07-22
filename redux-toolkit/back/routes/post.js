@@ -30,7 +30,7 @@ const upload = multer({
 });
 
 router.get('/:postId', async (req, res, next) => {
-	// GET /post
+	// GET /post/1
 	try {
 		const post = await Post.findOne({
 			where: { id: req.params.postId },

@@ -1,46 +1,4 @@
-import shortid from 'shortid';
-import produce from 'immer';
-
-// {
-// 	id: 1,
-// 	User: {
-// 		id: 1,
-// 		nickname: '제로초',
-// 	},
-// 	content: '첫 번째 게시글 #해시태그 #익스프레스',
-// 	Images: [
-// 		{
-// 			id: shortid.generate(),
-// 			src: 'https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726',
-// 		},
-// 		{
-// 			id: shortid.generate(),
-// 			src: 'https://gimg.gilbut.co.kr/book/BN001958/rn_view_BN001958.jpg',
-// 		},
-// 		{
-// 			id: shortid.generate(),
-// 			src: 'https://gimg.gilbut.co.kr/book/BN001998/rn_view_BN001998.jpg',
-// 		},
-// 	],
-// 	Comments: [
-// 		{
-// 			id: shortid.generate(),
-// 			User: {
-// 				id: shortid.generate(),
-// 				nickname: 'nero',
-// 			},
-// 			content: '우와 개정판이 나왔군요~',
-// 		},
-// 		{
-// 			id: shortid.generate(),
-// 			User: {
-// 				id: shortid.generate(),
-// 				nickname: 'hero',
-// 			},
-// 			content: '얼른 사고싶어요~',
-// 		},
-// 	],
-// },
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
 	mainPosts: [],
@@ -76,81 +34,12 @@ const initialState = {
 	retweetError: null,
 };
 
-export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
-export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
-export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
-
-export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
-export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
-export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
-
-export const LOAD_USER_POSTS_REQUEST = 'LOAD_USER_POSTS_REQUEST';
-export const LOAD_USER_POSTS_SUCCESS = 'LOAD_USER_POSTS_SUCCESS';
-export const LOAD_USER_POSTS_FAILURE = 'LOAD_USER_POSTS_FAILURE';
-
-export const LOAD_HASHTAG_POSTS_REQUEST = 'LOAD_HASHTAG_POSTS_REQUEST';
-export const LOAD_HASHTAG_POSTS_SUCCESS = 'LOAD_HASHTAG_POSTS_SUCCESS';
-export const LOAD_HASHTAG_POSTS_FAILURE = 'LOAD_HASHTAG_POSTS_FAILURE';
-
-export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
-export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
-export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
-
-export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
-export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
-export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
-
-export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
-export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
-export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
-
-export const ADD_COMMENT_REQUEST = 'ADD_COMMNET_REQUEST';
-export const ADD_COMMENT_SUCCESS = 'ADD_COMMNET_SUCCESS';
-export const ADD_COMMENT_FAILURE = 'ADD_COMMNET_FAILURE';
-
-export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST';
-export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS';
-export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
-
-export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
-export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
-export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
-
-export const RETWEET_REQUEST = 'RETWEET_REQUEST';
-export const RETWEET_SUCCESS = 'RETWEET_SUCCESS';
-export const RETWEET_FAILURE = 'RETWEET_FAILURE';
-
-export const REMOVE_IMAGES = 'REMOVE_IMAGES';
-
 export const addPost = (data) => {
 	return {
 		type: ADD_POST_REQUEST,
 		data,
 	};
 };
-
-// export const generateDummyPost = (number) =>
-// 	Array(number)
-// 		.fill()
-// 		.map(() => ({
-// 			id: shortid.generate(),
-// 			User: {
-// 				id: shortid.generate(),
-// 				nickname: faker.name.firstName(),
-// 			},
-// 			content: faker.lorem.paragraph(),
-// 			Images: [{ src: 'https://via.placeholder.com/150' }],
-// 			Comments: [
-// 				{
-// 					id: shortid.generate(),
-// 					User: {
-// 						id: shortid.generate(),
-// 						nickname: faker.name.firstName(),
-// 					},
-// 					content: faker.lorem.sentences(),
-// 				},
-// 			],
-// 		}));
 
 const dummyPost = (data) => ({
 	id: data.id,
@@ -172,7 +61,18 @@ const dummyComment = (data) => ({
 	content: data,
 });
 
-// initialState.mainPosts = initialState.mainPosts.concat(generateDummyPost(10));
+const postSlice = createSlice({
+	name: 'post',
+	initialState,
+	reducers: {
+		removeImages(state, action) {
+			state.imagePaths = state.imagePaths.filter(
+				(v, i) => i !== action.payload
+			);
+		},
+	},
+	extraReducers: {},
+});
 
 const reducer = (state = initialState, action) => {
 	return produce(state, (draft) => {
